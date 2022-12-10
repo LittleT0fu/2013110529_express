@@ -12,7 +12,7 @@ var staffRoute = require('./routes/staff')
 
 var app = express();
 
-mongoose.connect('mongodb+srv://superdev:tTwsQ4xgId2z0r8B@2013110529-got.b05ljpd.mongodb.net/restfulapi?retryWrites=true&w=majority' , {useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.connect('mongodb+srv://superdev:tTwsQ4xgId2z0r8B@2013110529-got.b05ljpd.mongodb.net/restfulapi?retryWrites=true&w=majority' , {useNewUrlParser: true, useUnifiedTopology: true,useFindAndModify: false});
 
 app.use(logger('dev'));
 app.use(express.json());
