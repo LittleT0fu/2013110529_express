@@ -1,20 +1,12 @@
-exports.index = (req , res ,next)=>{
+const Company = require('../models/company')
+
+exports.company = async (req,res,next) => {
+
+    const company = await Company.findOne()
+    console.log(company)
+
     res.status(200).json({
-        "data" : [{
-            "id": 1,
-            "name": "microsoft thailand",
-            "address" : {
-                "province" : "Bangkok",
-                "postcode" : "10330"
-            }
-        },
-        {
-            "id": 2,
-            "name": "GOOGLE thailand",
-            "address" : {
-                "province" : "Bangkok",
-                "postcode" : "10330"
-            }
-        }]
-      })
+        data: company
+    })
 }
+
