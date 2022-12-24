@@ -57,7 +57,7 @@ exports.destroy = async (req, res, next) => {
     const company = await Company.deleteOne({
       _id: id,
     });
-    if (company.deleteCount === 0) {
+    if (company.deletedCount === 0) {
       throw new Error("ไม่พบข้อมูลผู้ใช้งาน / ไม่พบข้อมูลผู้ใช้งาน");
     } else {
       res.status(200).json({
