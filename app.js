@@ -9,6 +9,7 @@ var usersRouter = require('./routes/users');
 var companyRouter = require('./routes/company');
 var test_route = require('./routes/test_route')
 var staffRoute = require('./routes/staff')
+var shop_route = require('./routes/shop.js')
 
 var app = express();
 
@@ -25,5 +26,6 @@ app.use('/users', usersRouter);
 app.use('/company' , companyRouter);
 app.use('/test' , test_route)
 app.use('/staff' , staffRoute)
+app.use('/shop' , shop_route)
 
 module.exports = app;
