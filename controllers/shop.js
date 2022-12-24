@@ -22,7 +22,7 @@ exports.shop = async (req, res, next) => {
 
 
   exports.menu = async (req, res, next) => {
-    const menu = await Menu.find();
+    const menu = await Menu.find().populate('shop');
     console.log(menu);
 
     res.status(200).json({
@@ -30,3 +30,18 @@ exports.shop = async (req, res, next) => {
     });
   };
 
+
+  exports.show = async (req, res, next) => {
+    try {
+        const shop = await Shop.findById(req.params.id).populate("menu")
+        res.status(200).json({
+            data : shop,
+         })
+         if(!shop){
+            throw new Error("No data found");
+         }
+    } catch (error) {
+        
+    }
+    
+  };
