@@ -5,5 +5,6 @@ var shop_con = require('../controllers/shop')
 
 
 router.get('/', shop_con.shop);
+router.get('/menu', shop_con.menu);
 
 module.exports = router;

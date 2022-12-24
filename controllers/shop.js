@@ -1,4 +1,5 @@
 const Shop = require("../models/shop");
+const Menu = require("../models/menu")
 
 exports.shop = async (req, res, next) => {
     const shop = await Shop.find().select('name photo location').sort({id:-1});
@@ -18,3 +19,14 @@ exports.shop = async (req, res, next) => {
       data: shopWithPhotoDomain,
     });
   };
+
+
+  exports.menu = async (req, res, next) => {
+    const menu = await Menu.find();
+    console.log(menu);
+
+    res.status(200).json({
+      data: menu,
+    });
+  };
+
