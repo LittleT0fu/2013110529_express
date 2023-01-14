@@ -46,10 +46,12 @@ exports.shop = async (req, res, next) => {
             data : shop,
          })
          if(!shop){
-            throw new Error("No data found");
+            const error = new Error("No data found");
+            error.statusCode = 400
+            throw error
          }
     } catch (error) {
-        
+        next(error)
     }
     
   };

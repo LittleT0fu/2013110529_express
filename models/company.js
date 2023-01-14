@@ -2,9 +2,9 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const companySchema = new Schema({
-    name:  String,
+    name:  {type : String , trim : true , unique : true , index : true , require : true},
     address:{
-        province : String,
+        province : {type : String , trim:true , require:true},
     }
   },{ collection : "company"});
 
