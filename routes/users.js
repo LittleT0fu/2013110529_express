@@ -5,6 +5,8 @@ const userContoller = require('../controllers/userController')
 /* GET users listing. */
 router.get('/', userContoller.index);
 
+router.post('/', userContoller.register)
+
 router.get('/bio' , userContoller.bio);
 
 
