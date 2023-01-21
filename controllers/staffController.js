@@ -1,4 +1,5 @@
 const staff = require("../models/staff");
+const { validationResult } = require('express-validator')
 
 exports.staff = async (req, res, next) => {
   const data = await staff.find().sort({ _id: -1 });
@@ -9,7 +10,17 @@ exports.staff = async (req, res, next) => {
 };
 
 exports.insert = async (req, res, next) => {
-  const { name, salary } = req.body;
+  try {
+    const { name, salary } = req.body;
+
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    const error = new Error("อะไรสักอย่างผิดแหละ")
+    error.statusCode = 422  // common validation
+    error.validation = errors.array()
+    throw error
+  }
+
   let staffData = new staff({
     name: name,
     salary: salary,
@@ -19,6 +30,9 @@ exports.insert = async (req, res, next) => {
   res.status(200).json({
     Message: "เพิ่มข้อมูลเรียบร้อยแล้ว",
   });
+  } catch (error) {
+    next(error)
+  }
 };
 
 exports.show = async (req, res, next) => {

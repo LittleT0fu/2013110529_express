@@ -1,6 +1,7 @@
 const Shop = require("../models/shop");
 const Menu = require("../models/menu")
 const config = require("../config/index")
+const { validationResult } = require('express-validator')
 
 const fs = require('fs');
 const path = require('path');
@@ -58,19 +59,29 @@ exports.shop = async (req, res, next) => {
 
 
   exports.insert = async (req, res, next) => {
-    const { name, location , photo} = req.body;
+    try {
+      const { name, location , photo} = req.body;
+
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      const error = new Error("อะไรสักอย่างผิดแหละ")
+      error.statusCode = 422  // common validation
+      error.validation = errors.array()
+      throw error
+    }
+
     if(!photo){
       let shop = new Shop({
       name: name,
       location : location,
-      photo : photo
+      photo : config.DOMAIN +'/images/' + shop.photo
     });
     await shop.save();
     }else{
       let shop = new Shop({
         name: name,
         location : location,
-        photo : await saveImageToDisk(photo)
+        photo : config.DOMAIN +'/images/' +  await saveImageToDisk(photo)
       });
       await shop.save();
     }
@@ -79,6 +90,9 @@ exports.shop = async (req, res, next) => {
     res.status(200).json({
       Message: "เพิ่มข้อมูลเรียบร้อยแล้ว",
     });
+    } catch (error) {
+      next(error)
+    }
   };
 
   async function saveImageToDisk(baseImage) {

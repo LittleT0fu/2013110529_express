@@ -1,5 +1,6 @@
 const { schema } = require("../models/user");
 const User = require("../models/user");
+const { validationResult } = require('express-validator');
 
 exports.index = (req, res, next) => {
   // res.send('Hello with a resource');
@@ -19,7 +20,22 @@ exports.bio = (req, res, next) => {
 
 exports.register = async (req, res, next) => {
   try {
+
+
+
+
     const { name, email, password } = req.body;
+
+
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      const error = new Error("อะไรสักอย่างผิดแหละ")
+      error.statusCode = 422  // common validation
+      error.validation = errors.array()
+      throw error
+    }
+
+
     const existemail = await User.findOne({ email: email });
     if (existemail) {
       const error = new Error("อีเมลล์นี้มีผู้ใช้แล้ว")
