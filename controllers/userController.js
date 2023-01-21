@@ -1,6 +1,8 @@
 const { schema } = require("../models/user");
 const User = require("../models/user");
 const { validationResult } = require('express-validator');
+const jwt = require('jsonwebtoken')
+const config = require('../config/index')
 
 exports.index = (req, res, next) => {
   // res.send('Hello with a resource');
@@ -20,12 +22,7 @@ exports.bio = (req, res, next) => {
 
 exports.register = async (req, res, next) => {
   try {
-
-
-
-
     const { name, email, password } = req.body;
-
 
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -34,7 +31,6 @@ exports.register = async (req, res, next) => {
       error.validation = errors.array()
       throw error
     }
-
 
     const existemail = await User.findOne({ email: email });
     if (existemail) {
@@ -56,3 +52,51 @@ exports.register = async (req, res, next) => {
     next(error)
   }
 };
+
+
+exports.login = async (req,res,next) => {
+  try {
+    const { email, password } = req.body;
+
+
+
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      const error = new Error("อะไรสักอย่างผิดแหละ")
+      error.statusCode = 422  // common validation
+      error.validation = errors.array()
+      throw error
+    }
+    //check user
+    const user = await User.findOne({ email: email });
+    if (!user) {
+      const error = new Error("ไม่มีผู้ใช้นี้")
+      error.statusCode = 400
+      throw error
+    }
+
+    //check password
+    const isValid = await user.checkPassword(password)
+    if(!isValid){
+      const error = new Error("รหัสผ่านไม่ถูกต้อง")
+      error.statusCode = 401
+      throw error
+    }
+
+    //create token
+    const token = await jwt.sign({
+      id:user._id,
+      role:user.role
+    },config.SECRET_KEY,{expiresIn: "5h"})
+
+    const expire_in = jwt.decode(token)
+
+    res.status(201).json({
+      access_token:token,
+      expire_in: expire_in.exp,
+      token_type: 'Bearer'
+    });
+  } catch (error) {
+    next(error)
+  }
+}

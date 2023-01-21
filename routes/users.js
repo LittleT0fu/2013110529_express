@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 const userContoller = require('../controllers/userController')
-const { body,check } = require('express-validator');
+const { body } = require('express-validator');
 
 /* GET users listing. */
 router.get('/', userContoller.index);
@@ -13,6 +13,11 @@ router.post('/',[
 ], userContoller.register)
 
 router.get('/bio' , userContoller.bio);
+
+router.post('/login' ,[
+    body('email').not().isEmpty().withMessage("กรุณาป้อนอีเมลล์").isEmail().withMessage("รูปแบบอีเมลล์ไม่ถูกต้อง"),
+    body('password').not().isEmpty().withMessage("กรณาใส่พาสเวิร์ด")
+],userContoller.login)
 
 
 
