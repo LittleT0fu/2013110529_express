@@ -88,7 +88,6 @@ exports.login = async (req,res,next) => {
       id:user._id,
       role:user.role
     },config.SECRET_KEY,{expiresIn: "5 days"})
-
     const expire_in = jwt.decode(token)
 
     res.status(201).json({
@@ -99,4 +98,10 @@ exports.login = async (req,res,next) => {
   } catch (error) {
     next(error)
   }
+}
+
+exports.profile = async (res ,req ,next ) =>{
+  res.status(200).json({
+    user : req.user
+  })
 }

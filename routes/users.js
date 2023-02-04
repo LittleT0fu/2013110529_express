@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 const userContoller = require('../controllers/userController')
 const { body } = require('express-validator');
+const passportJWT = require("../middleware/passportJWT");
 
 /* GET users listing. */
 router.get('/', userContoller.index);
@@ -18,6 +19,8 @@ router.post('/login' ,[
     body('email').not().isEmpty().withMessage("กรุณาป้อนอีเมลล์").isEmail().withMessage("รูปแบบอีเมลล์ไม่ถูกต้อง"),
     body('password').not().isEmpty().withMessage("กรณาใส่พาสเวิร์ด")
 ],userContoller.login)
+
+router.get('/me',[passportJWT.isLogin],userContoller.profile);
 
 
 
