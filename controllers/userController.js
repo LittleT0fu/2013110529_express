@@ -87,7 +87,7 @@ exports.login = async (req,res,next) => {
     const token = await jwt.sign({
       id:user._id,
       role:user.role
-    },config.SECRET_KEY,{expiresIn: "5h"})
+    },config.SECRET_KEY,{expiresIn: "5 days"})
 
     const expire_in = jwt.decode(token)
 
