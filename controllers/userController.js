@@ -100,8 +100,12 @@ exports.login = async (req,res,next) => {
   }
 }
 
-exports.profile = async (res ,req ,next ) =>{
+exports.profile = (req, res, next) => {
+  // res.send('Hello with a resource');
+  const {role , name , email} = req.user
   res.status(200).json({
-    user : req.user
-  })
-}
+   role: role,
+   name : name ,
+   email : email
+  });
+};

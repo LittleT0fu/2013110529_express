@@ -7,6 +7,7 @@ exports.company = async (req, res, next) => {
 
   res.status(200).json({
     data: company,
+    user : req.user
   });
 };
 

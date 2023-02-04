@@ -3,6 +3,7 @@ var router = express.Router();
 const staff_Route = require('../controllers/staffController')
 const { body } = require('express-validator')
 const passportJWT = require('../middleware/passportJWT')
+
 /* GET home page. */
 
 router.get('/',[passportJWT.isLogin] ,staff_Route.staff );
