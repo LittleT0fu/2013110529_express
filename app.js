@@ -4,6 +4,8 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const mongoose = require('mongoose')
 var config =require('./config/index')
+//passport
+const passport = require('passport')
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -26,6 +28,10 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+//passport initialize
+app.use(passport.initialize());
+
+//route
 app.use('/', indexRouter);
 app.use('/user', usersRouter);
 app.use('/company' , companyRouter);
